@@ -59,9 +59,9 @@ d. -versao
 
 16 - Qual alternativa declara corretamente o método main?
 a. public static main(String[] args)
-b. public static void Main(String[] args)
+b. public static void Ex01(String[] args)
 c. void main(String[] args)
-d. static void Main()
+d. static void Ex01()
 e. public static void main(String[] args) X CORRETO
 
 17 - Qual código pode ser utilizado para exibir a mensagem Fatec em Java?

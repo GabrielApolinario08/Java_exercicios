@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Nona Lista/Nona Lista.iml" filepath="$PROJECT_DIR$/Nona Lista/Nona Lista.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Oitava Lista/Oitava Lista.iml" filepath="$PROJECT_DIR$/Oitava Lista/Oitava Lista.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Quarta Lista/Quarta Lista.iml" filepath="$PROJECT_DIR$/Quarta Lista/Quarta Lista.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Quinta Lista/Quinta Lista.iml" filepath="$PROJECT_DIR$/Quinta Lista/Quinta Lista.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Setima-Lista/Setima-Lista.iml" filepath="$PROJECT_DIR$/Setima-Lista/Setima-Lista.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sexta-Lista/Sexta-Lista.iml" filepath="$PROJECT_DIR$/Sexta-Lista/Sexta-Lista.iml" />
+      <module fileurl="file://$PROJECT_DIR$/decima_lista/decima_lista.iml" filepath="$PROJECT_DIR$/decima_lista/decima_lista.iml" />
+      <module fileurl="file://$PROJECT_DIR$/listas_resolvidas.iml" filepath="$PROJECT_DIR$/listas_resolvidas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/metodos02/metodos02.iml" filepath="$PROJECT_DIR$/metodos02/metodos02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/metodos03/metodos03.iml" filepath="$PROJECT_DIR$/metodos03/metodos03.iml" />
+    </modules>
+  </component>
+</project>

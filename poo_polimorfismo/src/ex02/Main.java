@@ -2,6 +2,21 @@ package ex02;
 
 import java.util.Scanner;
 
+/*
+2) Se a mãe natureza pudesse criar um programa em Java para criar plantas de uma
+        floresta e as plantas sendo conhecidas por seus nomes e espécie, podendo ser de 3
+        tipos:
+        Árvore, que pode ou não ser frutífera;
+        Flor, que tem a cor dos suas flores; e
+        Carnívora, que pode ou não ser venenosa.
+        Como seria a criação de uma floresta?
+        Criar uma classe para criar uma floresta (main). Nesta classe deverá haver um menu
+        para cadastrar plantas, listar plantas, mostrar quantidade de plantas na floresta e
+        mostrar a quantidade de plantas de cada tipo (Árvore, Flor e Carnívora).
+*/
+
+
+//Gabriel Apolinário Fabrício
 public class Main {
 
     public static void main(String[] args) {

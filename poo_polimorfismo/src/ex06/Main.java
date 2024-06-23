@@ -31,7 +31,9 @@ public void setDisciplina( String disciplina ) {
         rentabilidade de cada sala e do colégio.
 */
 
-
 //Gabriel Apolinário Fabrício
 public class Main {
+    public static void main(String[] args) {
+
+    }
 }

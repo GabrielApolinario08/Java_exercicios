@@ -24,7 +24,12 @@ public class Cliente {
     }
 
     public void setCodigo(ArrayList<Cliente> clientes) {
-        this.codigo = (clientes.size() + 1);
+        if (clientes == null) {
+            this.codigo = 1;
+        } else {
+            this.codigo = (clientes.size() + 1);
+        }
+
     }
 
     public String getNome() {
@@ -47,7 +52,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente \n\tNome: " + getNome() + "\n\tIdade: " + getIdade() + "\n\tCódigo do CLiente: " + getCodigo();
+        return "Cliente:\tCódigo do CLiente: " + getCodigo() + "\tNome: " + getNome() + "\tIdade: " + getIdade();
 
     }
 

@@ -71,7 +71,7 @@ public class Midia {
 
     @Override
     public String toString() {
-        return "Midia" +
+        return "Midia:" +
                 "\tCodigo: " + codigo +
                 "\tDescricao: " + descricao +
                 "\tTipo: " + tipo +

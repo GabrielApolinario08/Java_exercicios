@@ -25,7 +25,6 @@ package ex04;
 
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 //Gabriel Apolinário Fabrício
@@ -35,7 +34,7 @@ public class Main {
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
         ArrayList<Midia> midias = new ArrayList<Midia>();
         ArrayList<Aluguel> alugueis = new ArrayList<Aluguel>();
-        int opc = 0;
+        int opc;
         do {
             System.out.println(menu());
             opc = scanner.nextInt();
@@ -43,7 +42,7 @@ public class Main {
                 case 1 -> cadastrarCliente(clientes);
                 case 2 -> cadastrarMidia(midias);
                 case 3 -> alugarMidia(clientes, midias, alugueis);
-                case 4 -> System.out.println();
+                case 4 -> devolverMidia(alugueis);
                 case 5 -> pagarAluguel(alugueis);
                 case 6 -> listarClientes(clientes);
                 case 7 -> listarMidias(midias);
@@ -85,6 +84,7 @@ public class Main {
                 idade = Integer.parseInt(idadeStr);
 
                 clientes.add(new Cliente(clientes, nome, idade));
+                System.out.println("\tCliente Adicionado com Sucesso!");
                 break;
             } catch (Exception e) {
                 System.out.println("ERRO! Insira os dados novamente!");
@@ -200,66 +200,73 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String opc;
         Aluguel aluguel = new Aluguel();
-        while (true) {
-            try {
-                listarClientes(clientes);
-                System.out.print("Digite o código do cliente que deseja alugar a mídia: ");
-                opc = scanner.nextLine();
-                for (Cliente cliente:clientes) {
-                    if (cliente.getCodigo() == Integer.parseInt(opc)) {
-                        aluguel.setCliente(cliente);
+        if (!clientes.isEmpty() && !midias.isEmpty()) {
+            while (true) {
+                try {
+                    listarClientes(clientes);
+                    System.out.print("Digite o código do cliente que deseja alugar a mídia: ");
+                    opc = scanner.nextLine();
+                    for (Cliente cliente:clientes) {
+                        if (cliente.getCodigo() == Integer.parseInt(opc)) {
+                            aluguel.setCliente(cliente);
+                        }
                     }
-                }
-                if (aluguel.getCliente() == null) throw new IllegalArgumentException("Cliente não encontrado.");
+                    if (aluguel.getCliente() == null) throw new IllegalArgumentException("Cliente não encontrado.");
 
-                listarMidias(midias);
-                System.out.print("Digite o Código da Mídia que Deseja Alugar: ");
-                opc = scanner.nextLine();
-                for (Midia midia:midias) {
-                    if (midia.getCodigo() == Integer.parseInt(opc)) {
-                        aluguel.setMidia(midia);
+                    listarMidias(midias);
+                    System.out.print("Digite o Código da Mídia que Deseja Alugar: ");
+                    opc = scanner.nextLine();
+                    for (Midia midia:midias) {
+                        if (midia.getCodigo() == Integer.parseInt(opc)) {
+                            aluguel.setMidia(midia);
+                        }
                     }
-                }
-                if (aluguel.getMidia() == null) throw new IllegalArgumentException("Mídia não encontrada.");
+                    if (aluguel.getMidia() == null) throw new IllegalArgumentException("Mídia não encontrada.");
 
-                System.out.println("Efetuar Pagamento Antecipado do Aluguel? [s/n]");
-                opc = scanner.nextLine().toLowerCase();
-                if (opc.equals("s")) {
-                    pagarAluguel(alugueis);
-                } else if (!opc.equals("n")) {
-                    throw new IllegalArgumentException("Digite apenas 's' para SIM ou 'n' para NÃO.");
+                    System.out.println("Efetuar Pagamento Antecipado do Aluguel? [s/n]");
+                    opc = scanner.nextLine().toLowerCase();
+                    if (opc.equals("s")) {
+                        aluguel.setPagamento(true);
+                    } else if (!opc.equals("n")) {
+                        throw new IllegalArgumentException("Digite apenas 's' para SIM ou 'n' para NÃO.");
+                    }
+                    aluguel.setCodigo(alugueis);
+                    alugueis.add(aluguel);
+                    System.out.println("Aluguel Concluido com Sucesso!");
+                    System.out.println(aluguel);
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Algum problema foi encontrado!\n" + e.getMessage());
                 }
-                System.out.println("Aluguel Concluido com Sucesso!");
-                System.out.println(aluguel);
-                alugueis.add(aluguel);
-                break;
-            } catch (Exception e) {
-                System.out.println("Algum problema foi encontrado!\n" + e.getMessage());
             }
+        } else {
+            System.out.println("Antes de Alugar Uma Mídia Deve-se Ter Pelo Menos 1 CLiente e 1 Mídia Cadastrada!");
         }
+
     }
 
     public static void pagarAluguel(ArrayList<Aluguel> alugueis) {
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Aluguel> alugueisNaoPagos = new ArrayList<Aluguel>();
+        boolean codCorreto = false;
         String opc;
         while (true) {
             try {
                 System.out.println("Lista de Alugueis Não Pagos!");
                 for (Aluguel aluguel:alugueis) {
                     if (!aluguel.isPagamento()) {
-                        alugueisNaoPagos.add(aluguel);
-                        System.out.println(alugueisNaoPagos.size() + ") " + aluguel);
+                        System.out.println(aluguel);
                     }
                 }
-                System.out.println("Qual Aluguel Deseja Confirmar o Pagamento? ");
+                System.out.println("Digite o Código do Aluguel Que Deseja Confirmar o Pagamento? ");
                 opc = scanner.nextLine();
-                if (Integer.parseInt(opc) < 1 || Integer.parseInt(opc) > alugueisNaoPagos.size()) throw new IllegalArgumentException("Aluguel não encontrado.");
-                for (Aluguel a:alugueis) {
-                    if (a == alugueisNaoPagos.get(Integer.parseInt(opc))) {
-                        a.setPagamento(true);
+                for (Aluguel aluguel:alugueis) {
+                    if (aluguel.getCodigo() == Integer.parseInt(opc) && !aluguel.isPagamento()) {
+                        aluguel.setPagamento(true);
+                        codCorreto = true;
                     }
                 }
+                if (!codCorreto) throw new IllegalArgumentException("Código incorreto.");
+                System.out.println("\tAluguel Pago com Sucesso!");
                 break;
             } catch (Exception e) {
                 System.out.println("Algum problema foi encontrado!\n" + e.getMessage());
@@ -267,24 +274,77 @@ public class Main {
         }
     }
 
+    public  static void devolverMidia(ArrayList<Aluguel> alugueis) {
+        Scanner scanner = new Scanner(System.in);
+        String opc;
+        boolean codCorreto = false;
+        if (!alugueis.isEmpty()) {
+            while (true) {
+                try {
+                    listarAlugueis(alugueis);
+                    System.out.println("Digite o Código do Aluguel Que Será Encerrado: (Digite 'e' para sair)");
+                    opc = scanner.nextLine();
+                    if (opc.equalsIgnoreCase("e")) {
+                        break;
+                    } else {
+                        for (Aluguel aluguel:alugueis) {
+                            if (aluguel.getCodigo() == Integer.parseInt(opc)) {
+                                if (aluguel.isPagamento()) {
+                                    codCorreto = true;
+                                    alugueis.remove(aluguel);
+                                    break;
+                                } else {
+                                    throw new IllegalArgumentException("Aluguel deve estar pago para devolver a mídia.");
+                                }
+                            }
+                        }
+                        if (!codCorreto) throw new IllegalArgumentException("Código não encontrado.");
+                        System.out.println("\tMídia Devolvida Com Sucesso!");
+                        break;
+                    }
+
+                } catch (Exception e) {
+                    System.out.println("Algum problema foi encontrado!\n" + e.getMessage());
+                }
+            }
+        } else {
+            System.out.println("Não é Possível Devolver Mídia Sem Ter Mídias Cadastradas!");
+        }
+
+    }
+
     public static void listarClientes(ArrayList<Cliente> clientes) {
-        System.out.println("Lista de Todos os Clientes!");
-        for (Cliente cliente:clientes) {
-            System.out.println(cliente);
+        if (!clientes.isEmpty()) {
+            System.out.println("Lista de Todos os Clientes!");
+            for (Cliente cliente:clientes) {
+                System.out.println(cliente);
+            }
+        } else {
+            System.out.println("Nenhum Cliente Cadastrado!");
         }
     }
 
     public static void listarMidias(ArrayList<Midia> midias) {
-        System.out.println("Lista de Todas as Mídias!");
-        for (Midia midia:midias) {
-            System.out.println(midia);
+        if (!midias.isEmpty()) {
+            System.out.println("Lista de Todas as Mídias!");
+            for (Midia midia:midias) {
+                System.out.println(midia);
+            }
+        } else {
+            System.out.println("Nenhuma Mídia Cadastrada!");
         }
     }
+
     public static void listarAlugueis(ArrayList<Aluguel> alugueis) {
-        System.out.println("Lista de Todos os Alugueis!");
-        for (Aluguel aluguel:alugueis) {
-            System.out.println(aluguel);
+        if (!alugueis.isEmpty()) {
+            System.out.println("Lista de Todos os Alugueis!");
+            for (Aluguel aluguel:alugueis) {
+                System.out.println(aluguel);
+            }
+        } else {
+            System.out.println("Nenhum Aluguel Cadastrado!");
         }
+
     }
 
 }

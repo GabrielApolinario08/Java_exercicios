@@ -53,9 +53,10 @@ public class Colegio {
                 case 4 -> listarSalas(salas);
                 case 5 -> listarProfessores(salas);
                 case 6 -> listarAlunos(salas);
-                case 7 -> System.out.println("Encerrado.");
+                case 7 -> verificarRentabilidade(salas);
+                case 8 -> System.out.println("Encerrado.");
             }
-        } while (opc != 7);
+        } while (opc != 8);
     }
 
     public static String menu() {
@@ -67,7 +68,8 @@ public class Colegio {
                     [4] Listar Salas
                     [5] Listar Professores
                     [6] Listar Alunos
-                    [7] Encerrar""";
+                    [7] Rentabilidade
+                    [8] Encerrar""";
     }
 
     public static void cadastrarSala(Sala[] salas, int qtdSala) {
@@ -94,12 +96,15 @@ public class Colegio {
             listarSalas(salas);
             System.out.print("Número da sala escolhida para cadastrar o professor: ");
             numSala = scanner.nextInt();
+            scanner.nextLine();
             System.out.println("Nome do professor: ");
-            nome = scannerStr.next();
+            nome = scannerStr.nextLine();
             System.out.println("Idade do professor: ");
             idade = scanner.nextInt();
+            scanner.nextLine();
             System.out.println("Salário do professor: ");
             salario = scanner.nextDouble();
+            scanner.nextLine();
             professor = new Professor(nome, idade, salario);
             System.out.println("Quantidade de disciplinas deste professor: ");
             qtdDisc = scanner.nextInt();
@@ -108,9 +113,8 @@ public class Colegio {
                 professor.setDisciplina(scannerStr.next());
             }
             salas[numSala - 1].setPessoa(professor);
-            for (Pessoa pessoa:salas[numSala - 1].getPessoa()) {
-                System.out.println(pessoa);
-            }
+
+            System.out.println("Professor cadastrado com sucesso!");
         }
     }
     public static void cadastrarAluno(Sala[] salas) {
@@ -126,16 +130,20 @@ public class Colegio {
             listarSalas(salas);
             System.out.print("Número da sala escolhida para cadastrar o aluno: ");
             numSala = scanner.nextInt();
+            scanner.nextLine();
             System.out.println("Nome do aluno: ");
-            nome = scannerStr.next();
+            nome = scannerStr.nextLine();
             System.out.println("Idade do aluno: ");
             idade = scanner.nextInt();
+            scanner.nextLine();
             System.out.println("Curso do aluno: ");
-            curso = scanner.next();
+            curso = scannerStr.nextLine();
             System.out.println("Mensalidade paga pelo aluno: ");
             mensalidade = scanner.nextDouble();
+            scanner.nextLine();
             aluno = new Aluno(nome, idade, curso, mensalidade);
             salas[numSala - 1].setPessoa(aluno);
+            System.out.println("Aluno cadastrado com sucesso!");
         }
     }
 
@@ -157,6 +165,7 @@ public class Colegio {
 
     public static void listarProfessores(Sala[] salas) {
         Scanner scanner = new Scanner(System.in);
+        boolean temProf = false;
         int numSala;
         if (salas[0] == null) {
             System.out.println("Nenhuma sala cadastrada!");
@@ -167,30 +176,66 @@ public class Colegio {
             for (Pessoa pessoa:salas[numSala - 1].getPessoa()) {
                 if (pessoa instanceof Professor) {
                     System.out.println("Professor: " + pessoa);
-                } else if (pessoa == null){
-                    return;
+                    temProf = true;
                 }
             }
-            System.out.println(salas[numSala - 1].getPessoa().length);
+            if (!temProf) System.out.println("Nenhum professor cadastrado!");
         }
     }
 
 
     public static void listarAlunos(Sala[] salas) {
         Scanner scanner = new Scanner(System.in);
+        boolean temAluno = false;
         int numSala;
         if (salas[0] == null) {
             System.out.println("Nenhuma sala cadastrada!");
         } else {
             listarSalas(salas);
-            System.out.print("Número da sala escolhida para listar os professores: ");
+            System.out.print("Número da sala escolhida para listar os alunos: ");
             numSala = scanner.nextInt();
-            for (Pessoa pessoa:salas[numSala - 1].getPessoa()) {
-                if (pessoa instanceof Aluno) {
-                    System.out.println("Aluno: " + pessoa);
-                    System.out.println();
+
+                for (Pessoa pessoa:salas[numSala - 1].getPessoa()) {
+                    if (pessoa instanceof Aluno) {
+                        System.out.println("Aluno: " + pessoa);
+                        System.out.println();
+                        temAluno = true;
+                    }
                 }
-            }
+                if (!temAluno) System.out.println("Nenhum aluno cadastrado!");
+
         }
     }
+
+    public  static void verificarRentabilidade(Sala[] salas) {
+        double totMensalidade = 0, totSalario = 0, rentColegio = 0;
+        int cont = -1;
+        double[] totSala = new double[salas.length];
+
+        if (salas[0] == null) {
+            System.out.println("Rentabilidade: R$ 0, pois não existe sala cadastrada!");
+            return;
+        }
+        System.out.println("Rentabilidade de cada sala!");
+        for(Sala sala:salas) {
+            if (sala == null) break;
+            cont++;
+            for (Pessoa pessoa:sala.getPessoa()) {
+                if (pessoa instanceof Professor) {
+                    totSalario += ((Professor) pessoa).getSalario();
+                } else if (pessoa instanceof Aluno){
+                    totMensalidade += ((Aluno) pessoa).getMensalidade();
+                } else if (sala.getPessoa()[0] == null){
+                    break;
+                }
+            }
+            totSala[cont] -= totSalario;
+            totSala[cont] += totMensalidade;
+            System.out.println("\t" + (cont + 1) + ") Rentabilidade sala " + sala.getNome() + ": R$" + totSala[cont]);
+            rentColegio += totSala[cont];
+            totSalario = totMensalidade = 0;
+        }
+        System.out.println("\nRentabilidade total do colégio: R$" + rentColegio);
+    }
+
 }
